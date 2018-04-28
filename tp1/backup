@@ -1,0 +1,37 @@
+
+
+    def __init__(self, matrix, row):
+        self.A = np.matrix(matrix[1:, 0:-1])
+        self.b = np.matrix(matrix[:, -1])
+        self.c = np.matrix(matrix[0, 0:-1])
+
+        zeros = np.zeros((1, row))
+        identity = np.matrix(np.identity(row))
+
+        c1 = -1 * self.c
+        c2 = np.concatenate((zeros, c1, zeros), axis=1)
+        aux1 = np.concatenate((identity, self.A, identity), axis=1)
+        aux2 = np.concatenate((c2, aux1), axis=0)
+        self.tableau = np.concatenate((aux2, self.b), axis=1)
+        print(self.tableau)
+
+
+        from sys import argv
+        import numpy as np
+        from tableau import Tableau
+
+        FILENAME = argv[2]
+
+
+        def main():
+            file = open(FILENAME, 'r')
+            row = int(file.readline())
+            col = int(file.readline())
+            aux1 = file.readline()
+            aux2 = np.matrix(aux1)
+            aux3 = aux2.reshape(row + 1, col + 1)
+            tableau = Tableau(aux3, row)
+
+
+        if __name__ == '__main__':
+            main()
