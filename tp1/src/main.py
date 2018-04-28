@@ -3,11 +3,17 @@ from sys import argv
 import numpy as np
 
 FILENAME = argv[2]
-MATRIX = 0
+matrix = 0
 
 
 def main():
-    MATRIX = start()
+    matrix = start()
+    matrix.fpi()
+    print("fpi:\n", matrix.matrix)
+    matrix.tableau()
+    print("tableau:\n", matrix.tableau)
+    matrix.auxiliary()
+    print("auxiliar:\n", matrix.auxiliary)
 
 
 def start():
