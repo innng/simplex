@@ -1,30 +1,29 @@
 from matrix import Matrix
 from sys import argv
-import numpy as np
 
-FILENAME = argv[2]
-matrix = 0
+filename = argv[3]
+matrix = Matrix()
 
 
 def main():
-    matrix = start()
+    start()
     matrix.fpi()
-    print("fpi:\n", matrix.matrix)
+    print("fpi:")
+    print(matrix.fpi)
     matrix.tableau()
-    print("tableau:\n", matrix.tableau)
+    print("tableau:")
+    print(matrix.tableau)
     matrix.auxiliary()
-    print("auxiliar:\n", matrix.auxiliary)
+    print("auxiliar:")
+    print(matrix.auxiliary)
 
 
 def start():
-    file = open(FILENAME, 'r')
+    file = open(filename, "r")
     row = int(file.readline())
     col = int(file.readline())
     aux1 = file.readline()
-    aux2 = np.matrix(aux1)
-    aux3 = aux2.reshape((row + 1, col + 1))
-    m = Matrix(aux3, row, col)
-    return m
+    matrix.init(aux1, row, col)
 
 
 if __name__ == '__main__':
