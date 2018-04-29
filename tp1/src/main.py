@@ -16,6 +16,7 @@ def main():
     matrix.auxiliary()
     print("auxiliar:")
     print(matrix.auxiliary)
+    matrix.pivot(1, 2)
 
 
 def start():

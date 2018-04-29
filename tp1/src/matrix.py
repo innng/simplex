@@ -48,7 +48,11 @@ class Matrix:
         a2 = np.concatenate((c3, a1), axis=0)
         self.auxiliary = np.concatenate((a2, self.b), axis=1)
 
-    def pivot(self):
+    def pivot(self, row, col):
+        multiplier = 0
+        for i in self.tableau.T[col]:
+            print(i)
+
         print("pivot")
 
     def solution(self):
