@@ -1,18 +1,16 @@
-from matrix import Matrix
+from simplex import *
 from sys import argv
-
-filename = argv[3]
-matrix = Matrix()
 
 
 def main():
     start()
-    matrix.default()
+    matrix.tableau()
+    print(matrix.tableau)
     matrix.updateFractions()
-
+    matrix.divide()
 
 def start():
-    file = open(filename, 'r')
+    file = open(argv[3], 'r')
     row = int(file.readline())
     col = int(file.readline())
     aux = file.readline()

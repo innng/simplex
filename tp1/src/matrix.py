@@ -1,31 +1,24 @@
-from fractions import Fraction
 import numpy as np
+from fractions import Fraction
 
 
 class Matrix:
     A = 0
     b = 0
     c = 0
-    matrix = 0
     tableau = 0
+    base = []
+    parts = {'A': 0, 'b': 0, 'c': 0, 'mem': 0, 'gap': 0}
 
-    def init(self, m, row, col):
+    def init(self, m, r, c):
         aux1 = np.matrix(m, dtype="object")
-        aux2 = aux1.reshape((row + 1, col + 1))
+        aux2 = aux1.reshape(r + 1, c + 1)
 
         self.A = np.matrix(aux2[1:, 0:-1], dtype="object")
         self.b = np.matrix(aux2[:, -1], dtype="object")
         self.c = np.matrix(aux2[0, 0:-1], dtype="object")
 
-        zeros = np.zeros((1, self.A.shape[0]), dtype="object")
-        identity = np.identity(self.A.shape[0], dtype="object")
-
-        c1 = np.concatenate((self.c, zeros), axis=1)
-        a1 = np.concatenate((self.A, identity), axis=1)
-        a2 = np.concatenate((c1, a1), axis=0)
-        self.matrix = np.concatenate((a2, self.b), axis=1)
-
-    def default(self):
+    def tableau(self):
         zeros = np.zeros((1, self.A.shape[0]), dtype="object")
         identity = np.identity(self.A.shape[0], dtype="object")
 
@@ -51,28 +44,29 @@ class Matrix:
             print("Invalid position in tableau!")
             return
 
-        multiplier = np.zeros(self.tableau.shape[0], dtype="object")
-        multiplier[row] = Fraction(1, self.tableau[row, col])
+        multiplier = Fraction(1, self.tableau[row, col])
 
         for i in range(0, self.tableau.shape[1]):
-            self.tableau[row, i] = self.tableau[row, i] * multiplier[row]
+            self.tableau[row, i] = self.tableau[row, i] * multiplier
 
         for i in range(0, self.tableau.shape[0]):
             if(i != row):
-                multiplier[i] = -1 * Fraction(self.tableau.T[col, i], self.tableau.T[col, row])
+                multiplier = -1 * Fraction(self.tableau.T[col, i], self.tableau.T[col, row])
 
-        for i in range(0, self.tableau.shape[0]):
-            if(i != row):
                 for j in range(0, self.tableau.shape[1]):
-                    self.tableau[i, j] = self.tableau[i, j] + self.tableau[row, j] * multiplier[i]
-
-    def solution(self):
-        print("sol")
+                    self.tableau[i, j] = self.tableau[i, j] + self.tableau[row, j] * multiplier
 
     def updateFractions(self):
         for i in range(0, self.tableau.shape[0]):
             for j in range(0, self.tableau.shape[1]):
                 self.tableau[i, j] = Fraction(self.tableau[i, j], 1)
 
+    def divide(self):
+        self.parts['A'] = self.tableau[1:, self.A.shape[0]: 2 * self.A.shape[0] + 1]
+        self.parts['b'] = self.tableau[:, -1]
+        self.parts['c'] = self.tableau[0, self.A.shape[0]: 2 * self.A.shape[0] + 1]
+        self.parts['mem'] = self.tableau[:, 0:self.A.shape[0]]
+        self.parts['gap'] = self.tableau[:, self.parts['mem'].shape[1] + self.parts['c'].shape[1]: -1]
+
     def updateBase(self):
-        print("base")
+        print("oi")
