@@ -4,7 +4,10 @@ matrix = Matrix()
 
 
 def algorithmSelector():
-    print("select")
+    notC = False
+    notB = False
+
+    
 
 
 def primalPivot():

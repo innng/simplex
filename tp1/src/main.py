@@ -1,13 +1,13 @@
 from simplex import *
 from sys import argv
-
+from fractions import Fraction
+import numpy as np
 
 def main():
     start()
     matrix.tableau()
     print(matrix.tableau)
-    matrix.updateFractions()
-    matrix.divide()
+
 
 def start():
     file = open(argv[3], 'r')
