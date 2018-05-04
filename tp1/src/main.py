@@ -6,7 +6,8 @@ import numpy as np
 def main():
     start()
     matrix.tableau()
-    print(matrix.tableau)
+    # print(matrix.tableau)
+    # algorithmSelector()
 
 
 def start():
