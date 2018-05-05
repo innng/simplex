@@ -1,42 +1,69 @@
+from fractions import Fraction
 from matrix import Matrix
 
 
 matrix = Matrix()
 
 
-def algorithmSelector():
+def selector():
     c = True
     b = True
 
-    for i in range(0, matrix.parts['c'].shape[1]):
-        if(matrix.parts['c'][0, i] < 0):
+    for i in range(0, matrix.getC().shape[1]):
+        if(matrix.getC()[0, i] < 0):
             c = False
             break
 
-    for i in range(0, matrix.parts['b'].shape[0]):
-        if(matrix.parts['b'][i, 0] < 0):
+    for i in range(0, matrix.getB().shape[0]):
+        if(matrix.getB()[i, 0] < 0):
             b = False
             break
 
-    if(c == False and b == True):
-        print("primal")
-    elif(c == True and b == False):
-        print("dual")
-    elif(c == False and b == False):
-        print("auxiliar")
+    if(c is False and b is True):
+        primal()
+    elif(c is True and b is False):
+        dual()
+    elif(c is False and b is False):
+        adjustMatrix()
+    elif(c is True and b is True):
+        print("done")
 
 
 def primalPivot():
-    print("primal")
+    rIndex = 0
+    cIndex = 0
 
+    for i in range(0, matrix.getC().shape[1]):
+        if(matrix.getC()[0, i] < 0):
+            cIndex = i
+            break
 
-def dualPivot():
-    print("dual")
+    ratio = float('inf')
+    for i in range(0, matrix.getA().shape[0]):
+        if(matrix.getA()[i, cIndex] > 0):
+            aux = Fraction(matrix.getB()[i + 1, 0], matrix.getA()[i, cIndex])
+        if(aux < ratio):
+            ratio = aux
+            rIndex = i
+
+    return (matrix.getC().shape[0] + rIndex, matrix.getMem().shape[1] + cIndex)
 
 
 def primal():
-    print("primal")
+    (row, col) = primalPivot()
+    matrix.pivot(row, col)
+    selector()
+
+
+def dualPivot():
+    print("pivot")
 
 
 def dual():
-    print("dual")
+    (row, col) = dualPivot()
+    matrix.pivot(row, col)
+    selector()
+
+
+def adjustMatrix():
+    print("adjust")

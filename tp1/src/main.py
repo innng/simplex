@@ -1,13 +1,14 @@
-from simplex import *
+from simplex import selector
+from simplex import matrix
 from sys import argv
-from fractions import Fraction
-import numpy as np
+
 
 def main():
     start()
     matrix.tableau()
-    # print(matrix.tableau)
-    # algorithmSelector()
+    print(matrix.base)
+    print(matrix.tableau, '\n\n')
+    selector()
 
 
 def start():
