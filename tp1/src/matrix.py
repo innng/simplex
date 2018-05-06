@@ -1,5 +1,5 @@
-import numpy as np
 from fractions import Fraction
+import numpy as np
 
 
 class Matrix:
@@ -46,7 +46,7 @@ class Matrix:
                 break
         self.base.append((row, col))
 
-    def pivot(self, row, col):
+    def pivoting(self, row, col):
         if(row > self.tableau.shape[0] or col > self.tableau.shape[1]):
             print("Invalid position in tableau!")
             return
