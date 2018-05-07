@@ -1,16 +1,12 @@
-from simplex import matrix
-from simplex import selection
-from utils import entry
+from simplex import Simplex
+from utils import getEntry
+
+simplex = Simplex()
 
 
 def main():
-    (aux, row, col) = entry()
-    matrix.init(aux, row, col)
-    matrix.tableau()
-    print(matrix.base)
-    print(matrix.tableau, '\n\n')
-    selection()
-    # np.set_printoptions(precision=6, suppress=True)
+    (aux, row, col) = getEntry()
+    simplex.init(aux, row, col)
 
 
 if __name__ == '__main__':

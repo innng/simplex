@@ -32,7 +32,7 @@ class Matrix:
         for i in range(0, self.getGap().shape[0]):
             for j in range(0, self.getGap().shape[1]):
                 if(self.getGap()[i, j] == 1):
-                    self.base.append((i + 1, self.A.shape[0] + self.c.shape[1] + j))
+                    self.base.append([i + 1, self.A.shape[0] + self.c.shape[1] + j])
 
     def updateFractions(self):
         for i in range(0, self.tableau.shape[0]):
@@ -42,15 +42,13 @@ class Matrix:
     def updateBase(self, row, col):
         for i in self.base:
             if(i[0] == row):
-                self.base.remove(i)
+                i[1] = col
                 break
-        self.base.append((row, col))
 
     def pivoting(self, row, col):
         if(row > self.tableau.shape[0] or col > self.tableau.shape[1]):
             print("Invalid position in tableau!")
             return
-
         multiplier = Fraction(1, self.tableau[row, col])
 
         for i in range(0, self.tableau.shape[1]):
@@ -65,15 +63,21 @@ class Matrix:
         self.updateBase(row, col)
 
     def extendAuxiliary(self):
-        zeros = np.zeros((1, self.getC().shape[1]), dtype='object')
+        zeros1 = np.zeros((1, self.getC().shape[1]), dtype='object')
         ones = np.ones((1, self.getGap().shape[1]), dtype='object')
         identity = np.identity(self.A.shape[0], dtype='object')
 
-        c1 = np.concatenate((zeros, ones), axis=1)
+        c1 = np.concatenate((zeros1, ones), axis=1)
         a1 = np.concatenate((self.getA(), identity), axis=1)
         a2 = np.concatenate((c1, a1), axis=0)
         self.tableau = np.concatenate((self.getMem(), a2, self.getB()), axis=1)
         self.updateFractions()
+
+        self.base = []
+        for i in range(0, self.getGap().shape[0]):
+            for j in range(0, self.getGap().shape[1]):
+                if(self.getGap()[i, j] == 1):
+                    self.base.append([i + 1, self.A.shape[0] + (self.getC().shape[1] - self.A.shape[0]) + j])
 
     def destroyAuxiliary(self):
         zeros = np.zeros((1, self.A.shape[0]), dtype='object')
@@ -97,4 +101,4 @@ class Matrix:
         return self.tableau[:, 0:self.A.shape[0]]
 
     def getGap(self):
-        return self.tableau[1:, self.A.shape[0] + self.c.shape[1]:-1]
+        return self.tableau[1:, self.A.shape[0] + (self.getC().shape[1] - self.A.shape[0]):-1]
