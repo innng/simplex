@@ -48,7 +48,10 @@ class Simplex:
             self.auxiliary = True
             self.adjustMatrix()
         elif(c is True and b is True):
-            self.end()
+            if(self.auxiliary is True):
+                self.evalAuxiliary()
+            else:
+                self.end()
 
     def testNonViable(self):
         index = -1
@@ -87,14 +90,11 @@ class Simplex:
         certificate = np.zeros((1, self.matrix.c.shape[1]), dtype='object')
         certificate[0, cIndex] = 1
 
-        print(certificate)
+        printConclusao(UNBOUNDED, certificate)
 
     def end(self):
-        if(self.auxiliary is True):
-            self.evalAuxiliary()
-        else:
-            solution = self.getSolution()
-            printConclusao(LIMITED, self.matrix.getMem()[0], self.matrix.getB()[0, 0], solution)
+        solution = self.getSolution()
+        printConclusao(LIMITED, self.matrix.getMem()[0], self.matrix.getB()[0, 0], solution)
 
     def primalPivot(self):
         rIndex = -1
@@ -149,28 +149,23 @@ class Simplex:
     def adjustMatrix(self):
         for i in range(1, self.matrix.getB().shape[0]):
             if(self.matrix.getB()[i, 0] < 0):
-                self.matrix.getB()[i, 0] = -1 * self.matrix.getB()[i, 0]
-
-                for j in range(0, self.matrix.getMem().shape[1]):
-                    self.matrix.getMem()[i, j] = -1 * self.matrix.getMem()[i, j]
-
-                for j in range(0, self.matrix.getA().shape[1]):
-                    self.matrix.getA()[i-1, j] = -1 * self.matrix.getA()[i-1, j]
+                self.matrix.tableau[i, :] = -1 * self.matrix.tableau[i, :]
 
         self.matrix.extendAuxiliary()
 
         for i in range(0, len(self.matrix.base)):
             self.matrix.pivoting(self.matrix.base[i][0], self.matrix.base[i][1])
 
-        if(self.matrix.getB()[0, 0] == 0):
-            self.selection()
-        else:
-            self.nonViable()
+        self.selection()
 
     def evalAuxiliary(self):
         if(self.matrix.getB()[0, 0] == 0):
             self.matrix.destroyAuxiliary()
             self.auxiliary = False
+
+            for i in range(0, len(self.matrix.base)):
+                self.matrix.pivoting(self.matrix.base[i][0], self.matrix.base[i][1])
+
             self.selection()
         elif(self.matrix.getB()[0, 0] < 0):
             self.nonViable()
