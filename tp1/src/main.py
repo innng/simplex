@@ -1,6 +1,7 @@
 from simplex import Simplex
 from utils import getEntry
 
+# instância da classe principal
 simplex = Simplex()
 
 

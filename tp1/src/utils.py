@@ -1,10 +1,12 @@
 from sys import argv
 import numpy as np
 
+# abre os dois arquivos de saída
 pivotingFile = open("pivoting.txt", "a")
 conclusaoFile = open("conclusao.txt", "w")
 
 
+# resgata toda a entrada do arquivo de teste
 def getEntry():
     file = open(argv[4], 'r')
     row = int(file.readline())
@@ -14,10 +16,12 @@ def getEntry():
     return (aux, row, col)
 
 
+# manda imprimir o tableau no arquivo de pivoteamento
 def printPivoting(matrix):
     printMatrixP(matrix)
 
 
+# imprime a conclusão no arquivo conclusao.txt
 def printConclusao(flag, certificate, optimalValue=None, solution=None):
     if(flag >= 0 and flag <= 2):
         conclusaoFile.write(str(flag) + '\n')
@@ -27,10 +31,12 @@ def printConclusao(flag, certificate, optimalValue=None, solution=None):
         conclusaoFile.write(np.format_float_positional(float(optimalValue), precision=5) + '\n')
     printMatrixC(certificate)
 
+    # fecha os dois arquivos usados na execução
     pivotingFile.close()
     conclusaoFile.close()
 
 
+# formata e imprime qualquer matriz (tableau) no arquivo de pivoteamento
 def printMatrixP(matrix):
     pivotingFile.write('[')
     for i in range(0, matrix.shape[0]):
@@ -48,6 +54,7 @@ def printMatrixP(matrix):
     pivotingFile.write(']' + '\n\n')
 
 
+# formata e imprime qualquer matriz (vetor) no arquivo de conclusão
 def printMatrixC(matrix):
     conclusaoFile.write('[')
     for i in range(0, matrix.shape[0]):
