@@ -8,7 +8,7 @@ conclusaoFile = open("conclusao.txt", "w")
 
 # resgata toda a entrada do arquivo de teste
 def getEntry():
-    file = open(argv[4], 'r')
+    file = open(argv[1], 'r')
     row = int(file.readline())
     col = int(file.readline())
     aux = file.readline()

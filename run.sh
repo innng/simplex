@@ -6,5 +6,5 @@ fi
 if [ -f conclusao.txt ]; then
     rm conclusao.txt;
 fi
-python3 src/main.py src/tableau.py src/simplex.py src/utils.py $1
+python3 src/main.py $1
 rm -r src/__pycache__/
